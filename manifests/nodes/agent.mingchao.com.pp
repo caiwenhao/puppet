@@ -1,3 +1,3 @@
 node 'agent.mingchao.com' {
-    include test_file
+    include test::ntp
 }
