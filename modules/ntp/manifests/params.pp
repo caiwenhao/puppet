@@ -81,9 +81,16 @@ class ntp::params {
       ]
       $iburst_enable   = false
       $servers         = [
-        '0.centos.pool.ntp.org',
-        '1.centos.pool.ntp.org',
-        '2.centos.pool.ntp.org',
+        'time.nist.gov',
+        '0.asia.pool.ntp.org',
+        '1.asia.pool.ntp.org',
+        '2.asia.pool.ntp.org',
+        '3.asia.pool.ntp.org',
+        'time-a.nist.gov',
+        'time.windows.com',
+        'ntp.fudan.edu.cn',
+        '61.129.42.44',
+        '43.119.133.233',
       ]
     }
     'Suse': {
@@ -100,8 +107,8 @@ class ntp::params {
       $service_name    = 'ntp'
       $iburst_enable   = false
       $servers         = [
-        '0.opensuse.pool.ntp.org',
-        '1.opensuse.pool.ntp.org',
+        '10.142.39.37',
+        '10.142.25.101',
         '2.opensuse.pool.ntp.org',
         '3.opensuse.pool.ntp.org',
       ]

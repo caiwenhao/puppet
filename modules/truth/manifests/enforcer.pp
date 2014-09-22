@@ -8,6 +8,11 @@ class truth::enforcer {
   }
 
   if has_role("db") {
+    class { '::ntp':
+          restrict => ['127.0.0.1'],
+          interfaces => ['127.0.0.1'],
+          service_manage  => true,
+    }
     notify {"I am a database":}
   } else {
     notify {"I am not a database":}
