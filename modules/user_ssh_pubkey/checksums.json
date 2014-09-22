@@ -1,0 +1,13 @@
+{
+  "CHANGELOG.md": "9f73351280a3217f3886d8e55676d950",
+  "LICENSE": "1213825d527f889bbde544ac75998d67",
+  "manifests/init.pp": "e1840f7328cf349437a324a9a20cd481",
+  "spec/unit/user_ssh_pubkey_spec.rb": "5f2cfd195f24a142d9729f69471a876d",
+  "Rakefile": "7932cee4b7bbf4616946eff2b8d7d704",
+  "spec/defines/user_ssh_pubkey_spec.rb": "2bd76c60161d567baf970f864b6acbf1",
+  "spec/spec_helper.rb": "57ea979cafbfc1d8d3fd923b6a1325d7",
+  "metadata.json": "bddeba863a6aac8042351c88098104fd",
+  "README.md": "6eb328fb12f0a83de5a38c68b9e83069",
+  "lib/facter/user_ssh_pubkey.rb": "a6dcdbc17c93b76a441314f32a977b0c",
+  "TODO.md": "ef6c7c5076faae553a0ade6bc93518e1"
+}
