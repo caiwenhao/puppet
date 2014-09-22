@@ -13,6 +13,9 @@ class truth::enforcer {
           interfaces => ['127.0.0.1'],
           service_manage  => true,
     }
+    class { 'timezone':
+          timezone => 'Asia/Shanghai',
+    }
     notify {"I am a database":}
   } else {
     notify {"I am not a database":}
