@@ -525,6 +525,7 @@ class ssh (
     ensure    => installed,
     source    => $ssh_package_source_real,
     adminfile => $ssh_package_adminfile_real,
+    allow_virtual => false,
   }
 
   file  { 'ssh_config' :
@@ -602,9 +603,9 @@ class ssh (
   }
 
   if $manage_firewall == true {
-    firewall { '22 open port 22 for SSH':
+    firewall { "${sshd_config_port} open port ${sshd_config_port} for SSH":
       action => 'accept',
-      dport  => 22,
+      dport  => $sshd_config_port,
       proto  => 'tcp',
     }
   }

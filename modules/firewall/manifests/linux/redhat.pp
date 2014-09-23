@@ -23,12 +23,14 @@ class firewall::linux::redhat (
   if $::operatingsystem == RedHat and $::operatingsystemrelease >= 7 {
     package { 'iptables-services':
       ensure => present,
+      allow_virtual => false,
     }
   }
 
   if ($::operatingsystem == 'Fedora' and (( $::operatingsystemrelease =~ /^\d+/ and $::operatingsystemrelease >= 15 ) or $::operatingsystemrelease == "Rawhide")) {
     package { 'iptables-services':
       ensure => present,
+      allow_virtual => false,
     }
   }
 

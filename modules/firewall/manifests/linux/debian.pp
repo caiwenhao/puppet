@@ -19,6 +19,7 @@ class firewall::linux::debian (
 ) {
   package { 'iptables-persistent':
     ensure => present,
+    allow_virtual => false,
   }
 
   if($::operatingsystemrelease =~ /^6\./ and $enable == true
