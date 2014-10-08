@@ -1,4 +1,0 @@
-TO-DO
-=====
-
-* Write tests

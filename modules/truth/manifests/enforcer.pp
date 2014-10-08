@@ -142,6 +142,8 @@ logrotate::rule { 'messages':
   postrotate   => '/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true',
 }
 
+
+
     notify {"I am a database":}
   } else {
     notify {"I am not a database":}
