@@ -142,6 +142,71 @@ logrotate::rule { 'messages':
   postrotate   => '/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true',
 }
 
+class { '::mysql::server':
+  remove_default_accounts => true,
+  restart => true,
+  root_password    => 'strongpassword',
+  override_options => {
+        'mysqld' => {
+                'datadir' => '/usr/local/mysql/var/',
+                'max_connections' => '1024',
+                'default-storage-engine' => 'INNODB',
+                'bind-address' => '0.0.0.0',
+                'key_buffer_size' => '16M',
+                'query_cache_limit' => '2M',
+                'query_cache_size' => '128M',
+                'thread_cache_size' => '300',
+                'sort_buffer_size' => '8M',
+                'read_buffer_size' => '4M',
+                'read_rnd_buffer_size' => '256M',
+                'myisam_sort_buffer_size' => '32M',
+                'back_log' => '512',
+                'tmp_table_size' => '246M',
+                'thread_concurrency' => $processorcount,
+                'innodb_buffer_pool_size' => '6G',
+                'innodb_log_file_size' => '512M',
+                'innodb_log_buffer_size' => '8M',
+                'innodb_flush_log_at_trx_commit' => '2',
+                'open_files_limit' => '65535',
+                'innodb_file_per_table' => '1',
+                'max_connections' => '1024',
+                 },
+         'isamchk' => {
+                'key_buffer' => '1M',
+                'sort_buffer_size' => '1M',
+                'read_buffer' => '2M',
+                'write_buffer' => '2M',
+         },     
+         'myisamchk' => {
+                'key_buffer' => '1M',
+                'sort_buffer_size' => '1M',
+                'read_buffer' => '2M',
+                'write_buffer' => '2M',
+         }, 
+         'mysqldump' => {
+                'max_allowed_packet' => '16M',
+                'quick' => true,
+                'quote-names' => true,
+         }, 
+         'mysql' => {
+                'auto-rehash' => true,
+         }, 
+    }
+}
+
+class { '::mysql::bindings':
+  php_enable => true,
+  python_enable =>true,
+}
+
+class { 'nginx':
+ worker_connections => 8,
+ worker_rlimit_nofile => 8,
+ proxy_set_header => ['Host $host','X-Real-IP $remote_addr','X-Forwarded-For $proxy_add_x_forwarded_for'],
+ confd_purge => true,
+ vhost_purge => true,
+ }
+
 
 
     notify {"I am a database":}
