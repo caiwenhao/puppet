@@ -1,29 +1,33 @@
 {
-  "name": "jfryman-nginx",
-  "version": "0.1.1",
-  "author": "James Fryman",
-  "summary": "Puppet NGINX management module",
-  "license": "Apache License Version 2.0",
-  "source": "http://github.com/jfryman/puppet-nginx",
-  "project_page": "http://github.com/jfryman/puppet-nginx",
-  "issues_url": "https://github.com/jfryman/puppet-nginx/issues",
-  "description": "This module can be used for basic NGINX Management",
+  "license": "Apache 2.0",
+  "project_page": "https://github.com/thias/puppet-nginx",
+  "author": "Matthias Saou",
+  "name": "thias-nginx",
+  "source": "git://github.com/thias/puppet-nginx",
+  "types": [
+
+  ],
+  "description": "Install, enable and configure an NGINX web server instance.",
+  "version": "1.0.0",
   "dependencies": [
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 3.0.0"
-    },
-    {
-      "name": "puppetlabs/apt",
-      "version_requirement": ">= 1.0.0"
-    },
-    {
-      "name": "puppetlabs/concat",
-      "version_requirement": ">= 1.1.0"
-    },
-    {
-      "name": "ripienaar/module_data",
-      "version_requirement": ">= 0.0.3"
-    }
-  ]
+
+  ],
+  "summary": "NGINX web server module",
+  "checksums": {
+    "manifests/params.pp": "c2f381a244a8a4129e49f657fc209ac7",
+    "templates/mime.types.erb": "9c95d2a8c0562dea142ee7ce5197411d",
+    "files/php-to-index.conf.inc": "fbf56e0b2143df6759a50f5b0416d2da",
+    "LICENSE": "99219472697a01561e7630d63aaecdc1",
+    "ChangeLog": "8531bd8423e75558b42258b2ab70b9ab",
+    "templates/nginx.conf.erb": "6ec46aea2fc74ff2277dee9ba238faa5",
+    "manifests/file.pp": "fd7d46f24dedc65a06f2ca73690f28bc",
+    "manifests/init.pp": "25f1f4d12b7b1ed2f374db7cb8010f7b",
+    "tests/init.pp": "c0e7a30798dae942957dd3f6ca864246",
+    "templates/nginx.conf.orig": "fcd397a5c84594c1478a5403048e7ba2",
+    "templates/mime.types.orig": "32f74f0ecab0619706688918375c1fd7",
+    "README.md": "4f6d238d49ac08334c40ff582931ab93",
+    "Modulefile": "07e5fa6983ac90024a83a83f0b0c5d1a",
+    "files/php.conf.inc": "021b2aa24aa4edbcff23997106673ed7",
+    "tests/file.pp": "5aeec3105dcaf6ec9a01470d22d85b93"
+  }
 }

@@ -199,15 +199,13 @@ class { '::mysql::bindings':
   python_enable =>true,
 }
 
-class { 'nginx':
- worker_connections => 8,
- worker_rlimit_nofile => 8,
- proxy_set_header => ['Host $host','X-Real-IP $remote_addr','X-Forwarded-For $proxy_add_x_forwarded_for'],
- confd_purge => true,
- vhost_purge => true,
- }
-
-
+class { '::nginx':
+  fastcgi_buffers     => '8 8k',
+  fastcgi_buffer_size => '8k',
+  upstream => {
+    fpmbackend => 'server unix:/var/run/php-fpm-www.sock',
+  },
+}
 
     notify {"I am a database":}
   } else {
