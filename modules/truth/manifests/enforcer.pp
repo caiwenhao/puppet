@@ -1,3 +1,4 @@
+include 'epel'
 class truth::enforcer {
   if has_role("db") {
     class { '::ntp':
@@ -143,7 +144,7 @@ logrotate::rule { 'messages':
 }
 
 class { '::mysql::server':
-  remove_default_accounts => true,
+  remove_default_accounts => false,
   restart => true,
   root_password    => 'strongpassword',
   override_options => {
@@ -200,12 +201,22 @@ class { '::mysql::bindings':
 }
 
 class { '::nginx':
-  fastcgi_buffers     => '8 8k',
-  fastcgi_buffer_size => '8k',
+  worker_processes => $processorcount,
+  worker_connections => '51200',
+  tcp_nopush => 'on',
+  keepalive_timeout => '10',
+  gzip => 'off',
+  gzip_min_length => '2048',
+  gzip_types => 'text/plain  text/css  application/xml application/x-javascript',
+  server_names_hash_bucket_size => '128',
+  fastcgi_buffers     => '8 64k',
+  fastcgi_buffer_size => '64k',
   upstream => {
     fpmbackend => 'server unix:/var/run/php-fpm-www.sock',
   },
 }
+
+
 
     notify {"I am a database":}
   } else {
