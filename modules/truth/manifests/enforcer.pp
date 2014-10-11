@@ -200,23 +200,7 @@ class { '::mysql::bindings':
   python_enable =>true,
 }
 
-class { '::nginx':
-  worker_processes => $processorcount,
-  worker_connections => '51200',
-  tcp_nopush => 'on',
-  keepalive_timeout => '10',
-  gzip => 'off',
-  gzip_min_length => '2048',
-  gzip_types => 'text/plain  text/css  application/xml application/x-javascript',
-  server_names_hash_bucket_size => '128',
-  fastcgi_buffers     => '8 64k',
-  fastcgi_buffer_size => '64k',
-  upstream => {
-    fpmbackend => 'server unix:/var/run/php-fpm-www.sock',
-  },
-}
-
-
+class { 'nginx': }
 
     notify {"I am a database":}
   } else {
