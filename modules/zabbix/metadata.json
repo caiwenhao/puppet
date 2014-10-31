@@ -1,0 +1,299 @@
+{
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": ">= 3.2.0 < 3.4.0"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "name": "wdijkerman-zabbix",
+  "version": "0.5.1",
+  "summary": "Installing and maintaining zabbix instances. Will install server, proxy, java-gateway and agent on RedHat/Debian/Ubuntu. Also support for exported resources for automatic configure hosts in webinterface.",
+  "author": "Werner Dijkerman",
+  "description": "This module contains the classes for installing the following zabbix components:\n- zabbix-server\n- zabbix-agent\n- zabbix-proxy\n- zabbix-javagateway\n",
+  "dependencies": [
+    {
+      "name": "puppetlabs/postgresql",
+      "version_requirement": ">= 3.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.0.0"
+    },
+    {
+      "name": "puppetlabs/mysql",
+      "version_requirement": ">= 2.0.0"
+    },
+    {
+      "name": "puppetlabs/apache",
+      "version_requirement": ">= 1.0.0"
+    },
+    {
+      "name": "puppetlabs/firewall",
+      "version_requirement": ">= 1.0.0"
+    }
+  ],
+  "source": "https://github.com/dj-wasabi/puppet-zabbix.git",
+  "project_page": "https://github.com/dj-wasabi/puppet-zabbix",
+  "license": "Apache Version 2.0",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5.0",
+        "6.0"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "5.0",
+        "6.0"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "5.0",
+        "6.0"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "5.0",
+        "6.0"
+      ]
+    },
+    {
+      "operatingsystem": "XenServer",
+      "operatingsystemrelease": [
+        "6.0"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6.0",
+        "7.0"
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "zabbix_host",
+      "doc": "",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.\n\nValid values are `present`, `absent`. "
+        }
+      ],
+      "parameters": [
+        {
+          "name": "hostname",
+          "doc": "FQDN of the machine.\n\n"
+        },
+        {
+          "name": "ipaddress",
+          "doc": "The IP address of the machine running zabbix agent.\n\n"
+        },
+        {
+          "name": "use_ip",
+          "doc": "Using ipadress instead of dns to connect. Is used by the zabbix-api command.\n\n"
+        },
+        {
+          "name": "port",
+          "doc": "The port that the zabbix agent is listening on.\n\n"
+        },
+        {
+          "name": "group",
+          "doc": "Name of the hostgroup.\n\n"
+        },
+        {
+          "name": "templates",
+          "doc": "List of templates which should be loaded for this host.\n\n"
+        },
+        {
+          "name": "proxy",
+          "doc": "Whether it is monitored by an proxy or not.\n\n"
+        },
+        {
+          "name": "zabbix_url",
+          "doc": "The url on which the zabbix-api is available.\n\n"
+        },
+        {
+          "name": "zabbix_user",
+          "doc": "Zabbix-api username.\n\n"
+        },
+        {
+          "name": "zabbix_pass",
+          "doc": "Zabbix-api password.\n\n"
+        },
+        {
+          "name": "apache_use_ssl",
+          "doc": "If apache is uses with ssl\n\n"
+        }
+      ],
+      "providers": [
+        {
+          "name": "ruby",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "zabbix_proxy",
+      "doc": "",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.\n\nValid values are `present`, `absent`. "
+        }
+      ],
+      "parameters": [
+        {
+          "name": "hostname",
+          "doc": "FQDN of the machine.\n\n"
+        },
+        {
+          "name": "ipaddress",
+          "doc": "The IP address of the machine running zabbix proxy.\n\n"
+        },
+        {
+          "name": "use_ip",
+          "doc": "Using ipadress instead of dns to connect. Is used by the zabbix-api command.\n\n"
+        },
+        {
+          "name": "mode",
+          "doc": "The kind of mode the proxy running. Active (0) or passive (1).\n\n"
+        },
+        {
+          "name": "port",
+          "doc": "The port that the zabbix proxy is listening on.\n\n"
+        },
+        {
+          "name": "templates",
+          "doc": "Template which should be loaded for this host.\n\n"
+        },
+        {
+          "name": "zabbix_url",
+          "doc": "The url on which the zabbix-api is available.\n\n"
+        },
+        {
+          "name": "zabbix_user",
+          "doc": "Zabbix-api username.\n\n"
+        },
+        {
+          "name": "zabbix_pass",
+          "doc": "Zabbix-api password.\n\n"
+        },
+        {
+          "name": "apache_use_ssl",
+          "doc": "If apache is uses with ssl\n\n"
+        }
+      ],
+      "providers": [
+        {
+          "name": "ruby",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "zabbix_userparameters",
+      "doc": "",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.\n\nValid values are `present`, `absent`. "
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "An unique name for this define.\n\n"
+        },
+        {
+          "name": "hostname",
+          "doc": "FQDN of the machine.\n\n"
+        },
+        {
+          "name": "template",
+          "doc": "Template which should be loaded for this host.\n\n"
+        },
+        {
+          "name": "zabbix_url",
+          "doc": "The url on which the zabbix-api is available.\n\n"
+        },
+        {
+          "name": "zabbix_user",
+          "doc": "Zabbix-api username.\n\n"
+        },
+        {
+          "name": "zabbix_pass",
+          "doc": "Zabbix-api password.\n\n"
+        },
+        {
+          "name": "apache_use_ssl",
+          "doc": "If apache is uses with ssl\n\n"
+        }
+      ],
+      "providers": [
+        {
+          "name": "ruby",
+          "doc": ""
+        }
+      ]
+    }
+  ],
+  "checksums": {
+    "CHANGELOG.md": "880e3bb58ab96896c5cceecac6050a54",
+    "Modulefile": "a9770ded40573bce32694abf8bccafd6",
+    "README.md": "beb4424873170c3e7877c7bf78d6d953",
+    "Rakefile": "45088663914e5f681a733f3188c4e77e",
+    "lib/puppet/provider/zabbix.rb": "e563a374239af9949184c569460b7d25",
+    "lib/puppet/provider/zabbix_host/ruby.rb": "4ff7b0b620c7c963078a4f82acad6247",
+    "lib/puppet/provider/zabbix_proxy/ruby.rb": "2ff9ad193adbdcdb5dcc7f8f19c93905",
+    "lib/puppet/provider/zabbix_userparameters/ruby.rb": "3a23e760d8358e1db1877ed6f6d3b86b",
+    "lib/puppet/type/zabbix_host.rb": "4e800b80915445b3c667fb123dfd2c56",
+    "lib/puppet/type/zabbix_proxy.rb": "8e3e83938d60df2cdf7e4d6da6478072",
+    "lib/puppet/type/zabbix_userparameters.rb": "d038dd424649a754b6ef03e782ad160c",
+    "manifests/agent.pp": "47d566b7e41cbf859a40e0181b3b6a51",
+    "manifests/database/mysql.pp": "82dba20c4de69b46419cc5d5e9012491",
+    "manifests/database/postgresql.pp": "2bcde66c83e4bd392d97a87c300994f0",
+    "manifests/database.pp": "4c636dbc6ef7be6f4b334b42ae308313",
+    "manifests/javagateway.pp": "07f09395df42d3af3ab5b062fbe2e86b",
+    "manifests/params.pp": "c66d3e7c8105c1d325035bc7454a082a",
+    "manifests/proxy.pp": "0854dedf63d4bdc81667fca750bf3848",
+    "manifests/repo.pp": "185ed1706264fb9fd75c0f8841074839",
+    "manifests/resources/agent.pp": "de86ed8cd722e573ce2edd58c076a377",
+    "manifests/resources/proxy.pp": "925b00063cc14e0c592afde0cc1126ed",
+    "manifests/resources/server.pp": "2685b7195b1443d4a10acd8921e9b723",
+    "manifests/resources/userparameters.pp": "b2b279dec2042e59fd0e6e668ac6d426",
+    "manifests/server.pp": "3700583e4d8784f6c6388bcd2f88d913",
+    "manifests/userparameters.pp": "9f526ec3b1e6f8a8b1a03278c7a900a4",
+    "spec/classes/agent_spec.rb": "10f8023d61df9b79c750c525e8b64d6d",
+    "spec/classes/database_spec.rb": "2bf9df7709f8f7e8ca07a33d03da0f31",
+    "spec/classes/javagateway_spec.rb": "e07b908e8fb1871fad1877f85865f928",
+    "spec/classes/proxy_spec.rb": "bd22390db696f24d2bfe9481e169db3f",
+    "spec/classes/repo_spec.rb": "01e3315a85354cd3b741b6af83a69100",
+    "spec/classes/server_spec.rb": "db1eb65da4ac9a87bb2812ad5ee2ee47",
+    "spec/defines/userparameters_spec.rb": "d619597cf04830d2e798a068a8d44007",
+    "spec/spec_helper.rb": "792eeb7aa7edafb93e2bc1d27c5e75c5",
+    "templates/web/zabbix.conf.php.erb": "f3a18aa0f7efc9ffc1dcf00e635c5c50",
+    "templates/zabbix_agentd.conf.erb": "0773b31c68dd86079f408bb19eabb43f",
+    "templates/zabbix_java_gateway.conf.erb": "1dd1c333688e147ba70abdab397b4aec",
+    "templates/zabbix_proxy.conf.erb": "d69097b3f6744b2e71609539f25653c8",
+    "templates/zabbix_server.conf.erb": "f81ab89eb769b1e6d4ffa77982fcf94b"
+  }
+}

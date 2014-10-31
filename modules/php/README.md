@@ -1,91 +1,88 @@
 # puppet-php
 
-## Overview
+[![Build Status](https://travis-ci.org/Mayflower/puppet-php.svg?branch=master)](https://travis-ci.org/Mayflower/puppet-php)
 
-Install PHP packages and configure PHP INI files, for using PHP from the CLI,
-the Apache httpd module or FastCGI.
+``puppet-php`` is a Puppet module for managing PHP, in particular php-fpm.
 
-The module is very Red Hat Enterprise Linux focused, as the defaults try to
-change everything in ways which are typical for RHEL, but it also works on
-Debian based distributions (such as Ubuntu), and support for others should
-be easy to add.
+This originally was a fork of [jippi/puppet-php](https://github.com/jippi/puppet-php)
+(nodes-php on Puppet Forge) but has since been rewritten in large parts.
 
-* `php::cli` : Simple class to install PHP's Command Line Interface
-* `php::fpm::daemon` : Simple class to install PHP's FastCGI Process Manager
-* `php::fpm::conf` : PHP FPM pool configuration definition
-* `php::ini` : Definition to create php.ini files
-* `php::mod_php5` : Simple class to install PHP's Apache httpd module
-* `php::module` : Definition to manage separately packaged PHP modules
-* `php::module::ini` : Definition to manage the ini files of separate modules
+## Usage
 
-## Examples
+The module aims to use sane defaults and be easily configurable with hiera.
 
-Create `php.ini` files for different uses, but based on the same template :
+The recommended way is to use the main class to install php with following defaults:
 
-    php::ini { '/etc/php.ini':
-      display_errors => 'On',
-      memory_limit   => '256M',
-    }
-    php::ini { '/etc/httpd/conf/php.ini':
-      mail_add_x_header => 'Off',
-      # For the parent directory
-      require => Package['httpd'],
-    }
+```puppet
+class { '::php':
+  manage_repos => true,
+  cli          => true,
+  fpm          => true,
+  dev          => true,
+  composer     => true,
+  pear         => true,
+  phpunit      => false,
+  extensions   => {}
+}
+```
 
-Install the latest version of the PHP command line interface in your OS's
-package manager (e.g. Yum for RHEL):
+### Apache support
 
-    include php::cli
+Apache with `mod_php` is not supported by this module. Please use
+[puppetlabs/apache](https://forge.puppetlabs.com/puppetlabs/apache) instead.
 
-Install version 5.3.3 of the PHP command line interface ::
+We prefer using php-fpm. You can find an example Apache vhost in
+`manifests/apache_vhost.pp` that shows you how to use `mod_proxy_fcgi` to
+connect to php-fpm.
 
-    class { 'php::cli': ensure => '5.3.3' }
+### Defining php.ini settings
 
-Install the PHP Apache httpd module, using its own php configuration file
-(you will need mod_env in apache for this to work) :
+Can be defined as parameter `settings` on `php::{fpm, cli}` classes or
+`php::extension` resources. The recommended way is to use hiera:
 
-    class { 'php::mod_php5': inifile => '/etc/httpd/conf/php.ini' }
+```yaml
+php::cli::settings:
+  Date/date.timezone: Europe/London
+  PHP/short_open_tag: 'On'
+```
 
-Install PHP modules which don't have any configuration :
+### Installing extensions
 
-    php::module { [ 'ldap', 'mcrypt' ]: }
+Extensions can be installed either by using the parameter `extensions` in
+the main class or by defining the hash `php::extensions` in hiera.
 
-Configure PHP modules, which must be installed with php::module first :
+```yaml
+php::extensions:
+  json: {}
+  mysql: {}
+  memcached:
+    provider: pecl
+    header_packages:
+      - libmemcached-dev
+  apc:
+    package_prefix: php-
+    settings:
+      apc.stat: 1
+      apc.stat_ctime: 1
+```
 
-    php::module { [ 'pecl-apc', 'xml' ]: }
-    php::module::ini { 'pecl-apc':
-      settings => {
-        'apc.enabled'      => '1',
-        'apc.shm_segments' => '1',
-        'apc.shm_size'     => '64',
-      }
-    }
-    php::module::ini { 'xmlreader': pkgname => 'xml' }
-    php::module::ini { 'xmlwriter': ensure => absent }
+## Source Code
 
-Install PHP FastCGI Process Manager with a single pool to be used with nginx.
-Note that we reuse the 'www' name to overwrite the example configuration :
+The source can be found at
+[github.com/Mayflower/puppet-php](https://github.com/Mayflower/puppet-php/).
 
-    include php::fpm::daemon
-    php::fpm::conf { 'www':
-      listen  => '127.0.0.1:9001',
-      user    => 'nginx',
-      # For the user to exist
-      require => Package['nginx'],
-    }
+## Bugs & New Features
 
-Then from the nginx configuration :
+If you happen to stumble upon a bug, please feel free to create a pull request
+with a fix (optionally with a test), and a description of the bug and how it
+was resolved.
 
-    # PHP FastCGI backend
-    upstream wwwbackend {
-      server 127.0.0.1:9001;
-    }
-    # Proxy PHP requests to the FastCGI backend
-    location ~ \.php$ {
-      # Don't bother PHP if the file doesn't exist, return the built in
-      # 404 page (this also avoids "No input file specified" error pages)
-      if (!-f $request_filename) { return 404; }
-      include /etc/nginx/fastcgi.conf;
-      fastcgi_pass wwwbackend;
-    }
+Or simply create an issue adding steps to let us reproduce the bug.
+
+If you have a good idea for a feature, please create an issue to discuss it.
+Pull requests are always more than welcome.
+
+## License
+
+The project is released under the permissive MIT license.
 

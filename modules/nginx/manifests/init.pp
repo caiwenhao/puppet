@@ -31,7 +31,7 @@
 class nginx (
   $worker_cpu_affinity            = 'auto',
   $client_body_buffer_size        = '16k',
-  $client_body_temp_path          = '/spool/nginx/client_temp 1 2;',
+  $client_body_temp_path          = '/tmp/nginx_client_temp 1 2',
   $client_max_body_size           = '2m',
   $confd_purge                    = false,
   $configtest_enable              = true,
@@ -82,7 +82,7 @@ class nginx (
   $proxy_read_timeout             = '90',
   $proxy_redirect                 = 'off',
   $proxy_send_timeout             = '90',
-  $proxy_set_header               = ['Host             $host;','X-Real-IP        $remote_addr;','X-Forwarded-For  $proxy_add_x_forwarded_for;'],
+  $proxy_set_header               = ['Host             $host','X-Real-IP        $remote_addr','X-Forwarded-For  $proxy_add_x_forwarded_for'],
   $proxy_temp_path                = '/var/nginx/proxy_temp',
   $run_dir                        = '/var/nginx',
   $sendfile                       = 'on',
