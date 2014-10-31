@@ -24,6 +24,7 @@ class ssh (
   $ssh_config_macs                  = undef,
   $ssh_config_template              = 'ssh/ssh_config.erb',
   $ssh_sendenv                      = 'USE_DEFAULTS',
+  $ssh_gssapidelegatecredentials    = undef,
   $sshd_config_path                 = '/etc/ssh/sshd_config',
   $sshd_config_owner                = 'root',
   $sshd_config_group                = 'root',
@@ -63,6 +64,8 @@ class ssh (
   $sshd_pamauthenticationviakbdint  = 'USE_DEFAULTS',
   $sshd_gssapicleanupcredentials    = 'USE_DEFAULTS',
   $sshd_acceptenv                   = 'USE_DEFAULTS',
+  $sshd_config_hostkey              = 'USE_DEFAULTS',
+  $sshd_listen_address              = undef,
   $service_ensure                   = 'running',
   $service_name                     = 'USE_DEFAULTS',
   $service_enable                   = 'true',
@@ -97,6 +100,7 @@ class ssh (
       $default_sshd_acceptenv                  = true
       $default_service_hasstatus               = true
       $default_sshd_config_serverkeybits       = '1024'
+      $default_sshd_config_hostkey             = [ '/etc/ssh/ssh_host_rsa_key' ]
     }
     'Suse': {
       $default_packages                        = 'openssh'
@@ -116,6 +120,7 @@ class ssh (
       $default_sshd_acceptenv                  = true
       $default_service_hasstatus               = true
       $default_sshd_config_serverkeybits       = '1024'
+      $default_sshd_config_hostkey             = [ '/etc/ssh/ssh_host_rsa_key' ]
       case $::architecture {
         'x86_64': {
           $default_sshd_config_subsystem_sftp = '/usr/lib64/ssh/sftp-server'
@@ -148,6 +153,7 @@ class ssh (
       $default_sshd_acceptenv                  = true
       $default_service_hasstatus               = true
       $default_sshd_config_serverkeybits       = '1024'
+      $default_sshd_config_hostkey             = [ '/etc/ssh/ssh_host_rsa_key' ]
     }
     'Solaris': {
       $default_ssh_config_hash_known_hosts     = undef
@@ -164,34 +170,35 @@ class ssh (
       $default_sshd_acceptenv                  = false
       $default_sshd_config_serverkeybits       = '768'
       $default_ssh_package_adminfile           = undef
+      $default_sshd_config_hostkey             = [ '/etc/ssh/ssh_host_rsa_key' ]
       case $::kernelrelease {
         '5.11': {
-          $default_packages              = ['network/ssh',
-                                            'network/ssh/ssh-key',
-                                            'service/network/ssh']
-          $default_service_name          = 'ssh'
-          $default_service_hasstatus     = true
-          $default_ssh_package_source    = undef
+          $default_packages                      = ['network/ssh',
+                                                    'network/ssh/ssh-key',
+                                                    'service/network/ssh']
+          $default_service_name                  = 'ssh'
+          $default_service_hasstatus             = true
+          $default_ssh_package_source            = undef
         }
         '5.10': {
-          $default_packages              = ['SUNWsshcu',
-                                            'SUNWsshdr',
-                                            'SUNWsshdu',
-                                            'SUNWsshr',
-                                            'SUNWsshu']
-          $default_service_name          = 'ssh'
-          $default_service_hasstatus     = true
-          $default_ssh_package_source    = '/var/spool/pkg'
+          $default_packages                      = ['SUNWsshcu',
+                                                    'SUNWsshdr',
+                                                    'SUNWsshdu',
+                                                    'SUNWsshr',
+                                                    'SUNWsshu']
+          $default_service_name                  = 'ssh'
+          $default_service_hasstatus             = true
+          $default_ssh_package_source            = '/var/spool/pkg'
         }
         '5.9' : {
-          $default_packages              = ['SUNWsshcu',
-                                            'SUNWsshdr',
-                                            'SUNWsshdu',
-                                            'SUNWsshr',
-                                            'SUNWsshu']
-          $default_service_name          = 'sshd'
-          $default_service_hasstatus     = false
-          $default_ssh_package_source    = '/var/spool/pkg'
+          $default_packages                      = ['SUNWsshcu',
+                                                    'SUNWsshdr',
+                                                    'SUNWsshdu',
+                                                    'SUNWsshr',
+                                                    'SUNWsshu']
+          $default_service_name                  = 'sshd'
+          $default_service_hasstatus             = false
+          $default_ssh_package_source            = '/var/spool/pkg'
         }
         default: {
           fail('ssh module supports Solaris kernel release 5.9, 5.10 and 5.11.')
@@ -334,6 +341,18 @@ class ssh (
     }
   }
 
+  if $sshd_config_hostkey == 'USE_DEFAULTS' {
+    $sshd_config_hostkey_real = $default_sshd_config_hostkey
+  } else {
+    validate_array($sshd_config_hostkey)
+    validate_absolute_path(join($sshd_config_hostkey))
+    $sshd_config_hostkey_real = $sshd_config_hostkey
+  }
+
+  if $sshd_listen_address {
+    validate_array($sshd_listen_address)
+  }
+
   if $service_hasstatus == 'USE_DEFAULTS' {
     $service_hasstatus_real = $default_service_hasstatus
   } else {
@@ -391,7 +410,13 @@ class ssh (
     fail('ssh::sshd_config_banner must be set to be able to use sshd_banner_content.')
   }
 
-  validate_re($sshd_gssapiauthentication, '^(yes|no)$', "ssh::sshd_gssapiauthentication may be either 'yes' or 'no' and is set to <${sshd_gssapiauthentication}>.")
+  if $ssh_gssapidelegatecredentials != undef {
+    validate_re($ssh_gssapidelegatecredentials, '^(yes|no)$', "ssh::ssh_gssapidelegatecredentials may be either 'yes' or 'no' and is set to <${ssh_gssapidelegatecredentials}>.")
+  }
+
+  if $sshd_gssapiauthentication != undef {
+    validate_re($sshd_gssapiauthentication, '^(yes|no)$', "ssh::sshd_gssapiauthentication may be either 'yes' or 'no' and is set to <${sshd_gssapiauthentication}>.")
+  }
 
   if $sshd_gssapikeyexchange_real != undef {
     validate_re($sshd_gssapikeyexchange_real, '^(yes|no)$', "ssh::sshd_gssapikeyexchange may be either 'yes' or 'no' and is set to <${sshd_gssapikeyexchange_real}>.")
@@ -525,7 +550,6 @@ class ssh (
     ensure    => installed,
     source    => $ssh_package_source_real,
     adminfile => $ssh_package_adminfile_real,
-    allow_virtual => false,
   }
 
   file  { 'ssh_config' :
@@ -603,18 +627,18 @@ class ssh (
   }
 
   if $manage_firewall == true {
-    firewall { "${sshd_config_port} open port ${sshd_config_port} for SSH":
+    firewall { '22 open port 22 for SSH':
       action => 'accept',
-      dport  => $sshd_config_port,
+      dport  => 22,
       proto  => 'tcp',
     }
   }
 
   # export each node's ssh key
   @@sshkey { $::fqdn :
-    ensure  => $ssh_key_ensure,
-    type    => $ssh_key_type,
-    key     => $key,
+    ensure => $ssh_key_ensure,
+    type   => $ssh_key_type,
+    key    => $key,
   }
 
   if $ssh_key_import_real == true {

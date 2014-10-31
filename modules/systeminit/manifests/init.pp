@@ -3,11 +3,12 @@
 #
 class systeminit 
 (
-  $ps1			    = undef,
-  $enable_lnmp 	= false，
+  $ps1          = undef,
+  $enable_lnmp 	= false,
   $server_list  = inline_template("<%= `ls -d /data/*_* 2>/dev/null|sort -t_ -k2n -k3n|wc -l` %>"),
 ) 
 {
+include 'epel'
 #判断是否线上服
 if ($server_list != 0){
   notify {"已经存在业务数据，请检查！":}
@@ -60,8 +61,6 @@ $packages = [ "at",
               "libevent",
               "libevent-devel",
               "libidn-devel",
-              "libjpeg",
-              "libjpeg-devel",
               "libmcrypt",
               "libmcrypt-devel",
               "libpng",
@@ -116,7 +115,6 @@ $packages = [ "at",
               "tcl",
               "telnet",
               "traceroute",
-              "unrar",
               "vim-common",
               "vim-enhanced",
               "vnstat",
@@ -209,10 +207,10 @@ logrotate::rule { 'messages':
 }
 
   class { 'nginx': }
-  include '::systeminit::service::config'
-  include '::systeminit::ssh::config'
-  include '::systeminit::firewall::config'
-  include '::systeminit::mysql::install'
-  include 'erlang'
+  class {'::systeminit::service::config':}
+  #class {'::systeminit::ssh::config':}
+  class {'::systeminit::firewall::config':}
+  class {'::systeminit::mysql::install':}
+  class {'erlang':}
 
 }
