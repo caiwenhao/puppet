@@ -5,6 +5,7 @@ class mysql::bindings::perl {
     ensure   => $mysql::bindings::perl_package_ensure,
     name     => $mysql::bindings::perl_package_name,
     provider => $mysql::bindings::perl_package_provider,
+    allow_virtual => false,
   }
 
 }

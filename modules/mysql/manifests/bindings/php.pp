@@ -5,6 +5,7 @@ class mysql::bindings::php {
     ensure   => $mysql::bindings::php_package_ensure,
     name     => $mysql::bindings::php_package_name,
     provider => $mysql::bindings::php_package_provider,
+    allow_virtual => false,
   }
 
 }

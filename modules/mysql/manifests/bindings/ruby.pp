@@ -5,6 +5,7 @@ class mysql::bindings::ruby {
     ensure   => $mysql::bindings::ruby_package_ensure,
     name     => $mysql::bindings::ruby_package_name,
     provider => $mysql::bindings::ruby_package_provider,
+    allow_virtual => false,
   }
 
 }

@@ -53,7 +53,7 @@ class mysql::params {
         $config_file         = '/etc/my.cnf'
         $pidfile             = '/var/run/mariadb/mariadb.pid'
       } else {
-        $client_package_name = 'mysql'
+        $client_package_name = 'Percona-Server-client-55'
         $server_package_name = 'mysql-server'
         $server_service_name = 'mysqld'
         $log_error           = '/var/log/mysqld.log'
