@@ -116,7 +116,8 @@ $packages = [ "at",
 "tcpdump",
 "libmcrypt*",
 "rpmforge-release.x86_64",
-"yum-plugin-priorities",]
+"yum-plugin-priorities",
+"percona-xtrabackup"]
 
 yumrepo { 'mcyw':
   baseurl        => "http://104.131.82.4/centos/6.5/x86_64",

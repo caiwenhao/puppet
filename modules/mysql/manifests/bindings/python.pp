@@ -5,6 +5,7 @@ class mysql::bindings::python {
     ensure   => $mysql::bindings::python_package_ensure,
     name     => $mysql::bindings::python_package_name,
     provider => $mysql::bindings::python_package_provider,
+    allow_virtual => false,
   }
 
 }
