@@ -420,7 +420,7 @@ define nginx::resource::vhost (
 
   # Variables
   $vhost_dir = "${nginx::config::conf_dir}/sites-available"
-  $vhost_enable_dir = "${nginx::config::conf_dir}/sites-enabled"
+  $vhost_enable_dir = "${nginx::config::conf_dir}/vhost"
   $vhost_symlink_ensure = $ensure ? {
     'absent' => absent,
     default  => 'link',

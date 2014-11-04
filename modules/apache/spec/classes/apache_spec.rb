@@ -18,7 +18,7 @@ describe 'apache', :type => :class do
     it { should contain_user("www-data") }
     it { should contain_group("www-data") }
     it { should contain_class("apache::service") }
-    it { should contain_file("/etc/apache2/sites-enabled").with(
+    it { should contain_file("/etc/apache2/vhost").with(
       'ensure'  => 'directory',
       'recurse' => 'true',
       'purge'   => 'true',

@@ -40,7 +40,7 @@ describe 'nginx::resource::vhost' do
       it { is_expected.not_to contain_file("/etc/nginx/fastcgi_params") }
       it { is_expected.to contain_file("#{title}.conf symlink").with({
         'ensure' => 'link',
-        'path'   => "/etc/nginx/sites-enabled/#{title}.conf",
+        'path'   => "/etc/nginx/vhost/#{title}.conf",
         'target' => "/etc/nginx/sites-available/#{title}.conf"
       })}
     end

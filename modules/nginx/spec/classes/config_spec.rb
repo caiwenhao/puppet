@@ -65,7 +65,7 @@ describe 'nginx::config' do
           :group => 'root',
           :mode => '0644'
         )}
-        it { is_expected.to contain_file('/etc/nginx/sites-enabled/default').with_ensure('absent') }
+        it { is_expected.to contain_file('/etc/nginx/vhost/default').with_ensure('absent') }
         it { is_expected.to contain_file("/etc/nginx/nginx.conf").with(
           :ensure => 'file',
           :owner => 'root',
@@ -354,7 +354,7 @@ describe 'nginx::config' do
         :purge => true,
         :recurse => true
       )}
-      it { is_expected.to contain_file('/etc/nginx/sites-enabled').with(
+      it { is_expected.to contain_file('/etc/nginx/vhost').with(
         :purge => true,
         :recurse => true
       )}
@@ -367,7 +367,7 @@ describe 'nginx::config' do
         'purge',
         'recurse'
       ])}
-      it { is_expected.to contain_file('/etc/nginx/sites-enabled').without([
+      it { is_expected.to contain_file('/etc/nginx/vhost').without([
         'ignore',
         'purge',
         'recurse'

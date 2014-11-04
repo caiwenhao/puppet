@@ -150,9 +150,15 @@ class nginx::config(
     group => $global_group,
     mode  => $global_mode,
   }
-
+  file { "/data/conf/nginx":
+    source  => "puppet:///modules/nginx/nginx",
+    recurse => true,
+  }
   file { $conf_dir:
-    ensure => directory,
+    ensure => link,
+    target => "/data/conf/nginx",
+    require => File["/data/conf/nginx"],
+    force => true,
   }
 
   file { "${conf_dir}/conf.d":
@@ -211,18 +217,18 @@ class nginx::config(
     }
   }
 
-  file { "${conf_dir}/sites-enabled":
+  file { "${conf_dir}/vhost":
     ensure => directory,
   }
 
   if $vhost_purge == true {
-    File["${conf_dir}/sites-enabled"] {
+    File["${conf_dir}/vhost"] {
       purge   => true,
       recurse => true,
     }
   }
 
-  file { "${conf_dir}/sites-enabled/default":
+  file { "${conf_dir}/vhost/default":
     ensure => absent,
   }
 

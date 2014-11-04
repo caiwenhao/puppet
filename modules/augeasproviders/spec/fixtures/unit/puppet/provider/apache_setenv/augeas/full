@@ -234,7 +234,7 @@ LogFormat "%{User-agent}i" agent
 Include conf.d/
 
 # Include the virtual host configurations:
-Include sites-enabled/
+Include vhost/
 
 SetEnv TEST ignored
 SetEnv TEST test

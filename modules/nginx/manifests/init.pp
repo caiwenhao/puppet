@@ -38,7 +38,7 @@ class nginx (
   $conf_dir                       = '/etc/nginx',
   $conf_template                  = 'nginx/conf.d/nginx.conf.erb',
   $daemon_user                    = 'nginx',
-  $events_use                     = false,
+  $events_use                     = "epoll",
   $fastcgi_cache_inactive         = '20m',
   $fastcgi_cache_key              = false,
   $fastcgi_cache_keys_zone        = 'd3:100m',
@@ -48,16 +48,25 @@ class nginx (
   $fastcgi_cache_use_stale        = false,
   $gzip                           = 'off',
   $http_access_log                = 'off',
-  $http_cfg_append                = false,
+  $http_cfg_append                = {
+    'fastcgi_connect_timeout'=>"20",
+    'fastcgi_send_timeout'=>"30",
+    'fastcgi_read_timeout'=>"60",
+    'fastcgi_buffer_size'=>"64k",
+    'fastcgi_buffers'=>"4 64k",
+    'fastcgi_busy_buffers_size'=>"128k",
+    'fastcgi_temp_file_write_size'=>"128k",
+    'fastcgi_temp_path'=>"/dev/shm",
+  },
   $http_tcp_nodelay               = 'on',
   $http_tcp_nopush                = 'on',
-  $keepalive_timeout              = '10',
+  $keepalive_timeout              = '60',
   $logdir                         = '/var/log/nginx/',
   $mail                           = false,
   $manage_repo                    = undef,
   $multi_accept                   = 'on',
-  $names_hash_bucket_size         = '64',
-  $names_hash_max_size            = '512',
+  $names_hash_bucket_size         = '128',
+  $names_hash_max_size            = '1024',
   $nginx_error_log                = '/var/log/nginx/error.log crit',
   $nginx_locations                = {},
   $nginx_mailhosts                = {},
@@ -186,12 +195,31 @@ class nginx (
 	 $sites_available_group or
 	 $sites_available_mode {
 
-	  include nginx::notice::puppet_module_data
+	  #include nginx::notice::puppet_module_data
 	}
+if $operatingsystem in ["CentOS"] {
+  $service_start = '/sbin/service nginx start'
+  $service_reload = '/sbin/service nginx reload'
+  $service_stop = '/sbin/service nginx stop'
+}else{
+  $service_start = '/etc/init.d/nginx start'
+  $service_reload = '/etc/init.d/nginx reload'
+  $service_stop = '/etc/init.d/nginx stop'
+}
 
-  ### END DEPRECATION WARNING ###
-
-  class { 'nginx::package':
+  file {"/root/nginx_start":
+    content => $service_start,
+    mode    => '700',
+  }
+  file {"/root/nginx_reload":
+    content => $service_reload,
+    mode    => '700',
+  }
+  file {"/root/nginx_stop":
+    content => $service_stop,
+    mode    => '700',
+  }
+class { 'nginx::package':
     package_name   => $package_name,
     package_source => $package_source,
     package_ensure => $package_ensure,

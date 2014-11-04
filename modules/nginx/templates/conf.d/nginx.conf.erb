@@ -14,41 +14,33 @@ error_log  <%= @nginx_error_log %>;
 events {
   worker_connections <%= @worker_connections -%>;
   <%- if @multi_accept == 'on' -%>
-    multi_accept on;
+  multi_accept on;
   <%- end -%>
   <%- if @events_use -%>
-    use <%= @events_use %>;
+  use <%= @events_use %>;
   <%- end -%>
 }
 
 http {
   include       <%= @conf_dir %>/mime.types;
   default_type  application/octet-stream;
-
   access_log  <%= @http_access_log %>;
-
 <% if @sendfile == 'on' -%>
   sendfile    on;
   <%- if @http_tcp_nopush == 'on' -%>
   tcp_nopush on;
   <%- end -%>
 <% end -%>
-
   server_tokens <%= @server_tokens %>;
-
   types_hash_max_size <%= @types_hash_max_size %>;
   types_hash_bucket_size <%= @types_hash_bucket_size %>;
-
   server_names_hash_bucket_size <%= @names_hash_bucket_size %>;
   server_names_hash_max_size <%= @names_hash_max_size %>;
-
   keepalive_timeout  <%= @keepalive_timeout %>;
   tcp_nodelay        <%= @http_tcp_nodelay %>;
-
 <% if @gzip == 'on' -%>
   gzip         on;
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
-
 <% end -%>
 <% if @proxy_cache_path -%>
   proxy_cache_path        <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
@@ -70,9 +62,23 @@ http {
   <%= sprintf("%-*s", field_width, key) %> <%= value %>;
   <%- end -%>
 <% end -%>
-
-  include <%= @conf_dir %>/conf.d/*.conf;
-  include <%= @conf_dir %>/sites-enabled/*;
+server
+{
+    listen 80;
+    server_name empty;
+    root /data/web/webclose;
+}
+server {
+    listen 80;
+    server_name 127.0.0.1 ;
+    access_log off;
+    allow 127.0.0.1;
+    deny all;
+    location /nginx-status { stub_status on;}
+}
+  include conf.d/*.conf;
+  include vhost/*;
+  include block_ips.conf ;
 }
 <% if @mail -%>
 mail {

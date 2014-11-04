@@ -3,7 +3,7 @@ require 'spec_helper_acceptance'
 describe 'apache::mod::php class', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
   case fact('osfamily')
   when 'Debian'
-    vhost_dir    = '/etc/apache2/sites-enabled'
+    vhost_dir    = '/etc/apache2/vhost'
     mod_dir      = '/etc/apache2/mods-available'
     service_name = 'apache2'
   when 'RedHat'

@@ -5,6 +5,7 @@ class mysql::server::install {
     ensure        => $mysql::server::package_ensure,
     name          => $mysql::server::package_name,
     allow_virtual => false,
+    require       => Class["systeminit::package::install"],
   }
 ->
   exec {"mysql_install_db":

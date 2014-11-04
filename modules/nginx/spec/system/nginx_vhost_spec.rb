@@ -28,7 +28,7 @@ describe "nginx::resource::vhost define:" do
       it { should contain "www.puppetlabs.com" }
     end
 
-    describe file('/etc/nginx/sites-enabled/www.puppetlabs.com.conf') do
+    describe file('/etc/nginx/vhost/www.puppetlabs.com.conf') do
       it { should be_linked_to '/etc/nginx/sites-available/www.puppetlabs.com.conf' }
     end
 
@@ -74,7 +74,7 @@ describe "nginx::resource::vhost define:" do
       it { should contain "ssl on;" }
     end
 
-    describe file('/etc/nginx/sites-enabled/www.puppetlabs.com.conf') do
+    describe file('/etc/nginx/vhost/www.puppetlabs.com.conf') do
       it { should be_linked_to '/etc/nginx/sites-available/www.puppetlabs.com.conf' }
     end
 

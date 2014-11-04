@@ -2,9 +2,6 @@ class systeminit::mysql::install {
 
 $root_password = inline_template("<%= `tr -dc _A-Z,a-z:1-9. </dev/urandom |head -c20` %>")
 
-file {"/data/save":ensure => "directory",}
-->
-file {"/data/save/mysql_root":content => $root_password,}
 file {"mv_mysql":
   path   => "/data/database/mysql",
   ensure => "absent",
@@ -22,6 +19,10 @@ file {"/var/lib/mysql":
   ensure => link,
   target => "/data/database/mysql",
 }
+->
+file {"/data/save":ensure => "directory",}
+->
+file {"/data/save/mysql_root":content => $root_password,}
 
 file { '/root/mysql_start':
   content => '/sbin/service mysql start',

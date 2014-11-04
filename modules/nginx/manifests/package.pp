@@ -17,7 +17,7 @@ class nginx::package(
   $package_name   = 'nginx',
   $package_source = 'nginx',
   $package_ensure = 'present',
-  $manage_repo    = true,
+  $manage_repo    = false,
 ) {
 
   anchor { 'nginx::package::begin': }

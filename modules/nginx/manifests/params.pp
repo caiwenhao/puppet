@@ -23,13 +23,24 @@ class nginx::params {
     'Gentoo': { $package = 'www-servers/nginx' }
      default: { $package = 'nginx' }
   }
-  # service restart
-  case $::operatingsystem {
-    'Fedora',
-    'RedHat',
-    'CentOS': { $service_restart = '/sbin/service nginx reload' }
-     default: { $service_restart = '/etc/init.d/nginx reload' }
-  }
+
+### END DEPRECATION WARNING ###
+# service restart
+case $::operatingsystem {
+'Fedora',
+'RedHat',
+'CentOS': {
+$service_start = '/sbin/service nginx start'
+$service_restart = '/sbin/service nginx reload'
+$service_stop = '/sbin/service nginx stop'
+},
+default: {
+$service_start = '/etc/init.d/nginx start'
+$service_restart = '/etc/init.d/nginx reload'
+$service_stop = '/etc/init.d/nginx stop'
+}
+}
+
   # remove_default_conf
   case $::operatingsystem {
     'Fedora',
@@ -37,7 +48,7 @@ class nginx::params {
     'CentOS': { $remove_default_conf = true }
      default: { $remove_default_conf = false }
   }
-  # include /etc/nginx/sites-enabled/*
+  # include /etc/nginx/vhost/*
   case $::operatingsystem {
     'Debian',
     'Ubuntu': { $sites_enabled = true }

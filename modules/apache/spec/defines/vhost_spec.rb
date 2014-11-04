@@ -45,7 +45,7 @@ describe 'apache::vhost', :type => :define do
       ) }
       it { should contain_file("25-rspec.example.com.conf symlink").with(
         :ensure => 'link',
-        :path   => '/etc/apache2/sites-enabled/25-rspec.example.com.conf',
+        :path   => '/etc/apache2/vhost/25-rspec.example.com.conf',
         :target => '/etc/apache2/sites-available/25-rspec.example.com.conf'
       ) }
     end
