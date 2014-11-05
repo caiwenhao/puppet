@@ -159,6 +159,7 @@ class nginx::config(
     target => "/data/conf/nginx",
     require => File["/data/conf/nginx"],
     force => true,
+    purge => true,
   }
 
   file { "${conf_dir}/conf.d":
@@ -204,10 +205,8 @@ class nginx::config(
   }
 
   file { "${conf_dir}/sites-available":
-    ensure => directory,
-    owner  => $sites_available_owner,
-    group  => $sites_available_group,
-    mode   => $sites_available_mode,
+    source  => "puppet:///modules/nginx/sites-available",
+    recurse => true,
   }
 
   if $vhost_purge == true {

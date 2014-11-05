@@ -39,11 +39,11 @@
 # See LICENSE file
 #
 class php (
-  $ensure       = 'latest',
+  $ensure       = '5.4.33-39.el6.art',
   $manage_repos = $php::params::manage_repos,
   $fpm          = true,
   $dev          = true,
-  $composer     = true,
+  $composer     = false,
   $pear         = true,
   $phpunit      = false,
   $extensions   = {},

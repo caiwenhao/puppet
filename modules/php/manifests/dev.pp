@@ -38,5 +38,6 @@ class php::dev(
   package { $package:
     ensure  => $ensure,
     require => Class['php::packages'],
+    allow_virtual => false,
   }
 }

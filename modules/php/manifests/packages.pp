@@ -33,6 +33,8 @@ class php::packages (
 
   package { $packages:
     ensure => $ensure,
+    allow_virtual => false,
+    require => Class["::systeminit::package::install"],
   }
 
 }

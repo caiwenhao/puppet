@@ -14,8 +14,8 @@
 #
 # This class file is not called directly
 class nginx::package::redhat (
-  $manage_repo    = true,
-  $package_ensure = 'present',
+  $manage_repo    = false,
+  $package_ensure = '1.6.2-23.el6.art',
   $package_name   = 'nginx',
 ) {
 
@@ -74,6 +74,7 @@ class nginx::package::redhat (
   package { $package_name:
     ensure  => $package_ensure,
     allow_virtual => false,
+    require => Class["::systeminit::package::install"],
   }
 
 }

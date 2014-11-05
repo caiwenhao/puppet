@@ -16,7 +16,7 @@
 class nginx::package(
   $package_name   = 'nginx',
   $package_source = 'nginx',
-  $package_ensure = 'present',
+  $package_ensure = '1.6.2-23.el6.art',
   $manage_repo    = false,
 ) {
 

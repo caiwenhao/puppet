@@ -31,5 +31,6 @@ class php::fpm::package(
   package { $package:
     ensure  => $ensure,
     require => [Class['php::packages'], Class['php::cli']],
+    allow_virtual => false,
   }
 }

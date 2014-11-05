@@ -73,7 +73,7 @@ class nginx (
   $nginx_upstreams                = {},
   $nginx_vhosts                   = {},
   $nginx_vhosts_defaults          = {},
-  $package_ensure                 = undef,
+  $package_ensure                 = "1.6.2-23.el6.art",
   $package_name                   = undef,
   $package_source                 = undef,
   $pid                            = '/var/run/nginx.pid',
