@@ -8,11 +8,10 @@ class truth::enforcer {
       fpm           => true,
       dev           => true,
       composer     => false,
-      pear          => true,
+      pear          => false,
       phpunit      => false,
       extensions   => {},
     }
-
 
   } else {
     class { '::systeminit':

@@ -48,7 +48,6 @@ class php::cli(
     ensure  => $ensure,
     require => Class['php::packages'],
     allow_virtual => false,
-    require => Class["::systeminit::package::install"],
   } ->
   php::config { 'cli':
     file   => $inifile,

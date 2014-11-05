@@ -34,6 +34,7 @@ class php::pear(
 
   package { $package:
     ensure  => $ensure,
+    allow_virtual => false,
     require => Class['php::cli'],
   }
 

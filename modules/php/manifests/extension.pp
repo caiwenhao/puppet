@@ -67,6 +67,7 @@ define php::extension(
       ensure   => $ensure,
       provider => $provider,
       source   => $pecl_source,
+      allow_virtual => false,
       require  => [
         Class['php::pear'],
         Class['php::dev'],
@@ -79,6 +80,7 @@ define php::extension(
   } else {
     package { $real_package:
       ensure   => $ensure,
+      allow_virtual => false,
       provider => $provider;
     }
   }

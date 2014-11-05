@@ -36,6 +36,7 @@ class php::phpunit (
   package { $package:
     ensure   => present,
     provider => $provider,
+    allow_virtual => false,
   }
 
   if $provider == 'pear' {

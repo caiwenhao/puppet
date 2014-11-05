@@ -114,7 +114,6 @@ $packages = [ "at",
 "mtr",
 "kernel-devel",
 "tcpdump",
-"libmcrypt*",
 "rpmforge-release.x86_64",
 "yum-plugin-priorities",
 "percona-xtrabackup"]
