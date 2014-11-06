@@ -110,4 +110,5 @@ class php (
     require => Class['php::cli'],
     before  => Anchor['php::end']
   })
+  php::extension{"memcached":header_packages => ["memcached"],}
 }
